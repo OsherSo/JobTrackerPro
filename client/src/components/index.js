@@ -1,5 +1,8 @@
-import Logo from "../components/Logo";
-import FormRow from "./FormRow";
+import Logo from "./Logo";
 import Alert from "./Alert";
+import Navbar from "./Navbar";
+import FormRow from "./FormRow";
+import BigSidebar from "./BigSidebar";
+import SmallSidebar from "./SmallSidebar";
 
-export { Logo, FormRow, Alert };
+export { Logo, Alert, Navbar, FormRow, BigSidebar, SmallSidebar };
