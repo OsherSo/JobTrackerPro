@@ -4,14 +4,19 @@ const User = require('../models/User');
 const { BadRequestError } = require('../errors');
 
 exports.register = async (req, res) => {
-  const { name, email, password } = req.body;
+  const { name, email, password, passwordConfirm } = req.body;
+  const user = await User.create({ name, email, password, passwordConfirm });
+  const token = user.createJWT();
 
-  // if (!name || !email || !password) {
-  //   throw new BadRequestError('Please provide all values');
-  // }
-
-  const user = await User.create({ name, email, password });
-  res.status(StatusCodes.CREATED).json({ user });
+  res.status(StatusCodes.CREATED).json({
+    user: {
+      name: user.name,
+      lastName: user.lastName,
+      email: user.email,
+      location: user.location,
+    },
+    token,
+  });
 };
 
 exports.login = (req, res, next) => {
