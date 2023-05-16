@@ -37,6 +37,19 @@ exports.login = async (req, res) => {
   });
 };
 
-exports.updateUser = (req, res, next) => {
-  res.send('Update User');
+exports.updateUser = async (req, res) => {
+  const { email, name, lastName, location } = req.body;
+  const user = await User.findByIdAndUpdate(
+    req.user.userId,
+    { email, name, lastName, location },
+    { new: true, runValidators: true }
+  );
+
+  const token = user.createJWT();
+
+  res.status(StatusCodes.OK).json({
+    user,
+    token,
+    location: user.location,
+  });
 };
