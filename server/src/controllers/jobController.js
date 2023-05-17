@@ -6,7 +6,33 @@ const Job = require('../models/Job');
 const checkPermissions = require('../utils/checkPermissions');
 
 exports.getAllJobs = async (req, res) => {
-  const jobs = await Job.find({ createdBy: req.user.userId });
+  const { search, status, jobType, sort } = req.query;
+
+  const queryObject = {
+    createdBy: req.user.userId,
+  };
+  if (status !== 'all') {
+    queryObject.status = status;
+  }
+  if (jobType !== 'all') {
+    queryObject.jobType = jobType;
+  }
+  if (search) {
+    queryObject.position = { $regex: search, $options: 'i' };
+  }
+
+  let result = Job.find(queryObject);
+
+  const sortOptions = {
+    latest: (result) => result.sort('-createdAt'),
+    oldest: (result) => result.sort('createdAt'),
+    'a-z': (result) => result.sort('position'),
+    'z-a': (result) => result.sort('-position'),
+  };
+  result = sortOptions[sort](result);
+
+  const jobs = await result;
+
   res
     .status(StatusCodes.OK)
     .json({ jobs, totalJobs: jobs.length, numOfPages: 1 });
