@@ -31,9 +31,9 @@ const AddJob = () => {
 
     if (isEditing) {
       editJob();
+    } else {
+      createJob();
     }
-
-    createJob();
   };
 
   const handleJobInput = (e) => {
