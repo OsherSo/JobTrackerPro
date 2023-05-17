@@ -14,6 +14,9 @@ const errorHandler = (err, req, res, next) => {
   } else if (err.code === 11000) {
     defaultError.statusCode = StatusCodes.BAD_REQUEST;
     defaultError.msg = `${Object.keys(err.keyValue)} field has to be unique`;
+  } else if (err.name === 'CastError') {
+    defaultError.statusCode = StatusCodes.BAD_REQUEST;
+    defaultError.msg = `Invalid ${err.path}: ${err.value}`;
   }
 
   res.status(defaultError.statusCode).json({ msg: defaultError.msg });
