@@ -11,25 +11,25 @@ exports.getAllJobs = async (req, res) => {
   const queryObject = {
     createdBy: req.user.userId,
   };
-  // if (status !== 'all') {
-  //   queryObject.status = status;
-  // }
-  // if (jobType !== 'all') {
-  //   queryObject.jobType = jobType;
-  // }
-  // if (search) {
-  //   queryObject.position = { $regex: search, $options: 'i' };
-  // }
+  if (status !== 'all') {
+    queryObject.status = status;
+  }
+  if (jobType !== 'all') {
+    queryObject.jobType = jobType;
+  }
+  if (search) {
+    queryObject.position = { $regex: search, $options: 'i' };
+  }
 
   let result = Job.find(queryObject);
 
-  // const sortOptions = {
-  //   latest: (result) => result.sort('-createdAt'),
-  //   oldest: (result) => result.sort('createdAt'),
-  //   'a-z': (result) => result.sort('position'),
-  //   'z-a': (result) => result.sort('-position'),
-  // };
-  // result = sortOptions[sort](result);
+  const sortOptions = {
+    latest: (result) => result.sort('-createdAt'),
+    oldest: (result) => result.sort('createdAt'),
+    'a-z': (result) => result.sort('position'),
+    'z-a': (result) => result.sort('-position'),
+  };
+  result = sortOptions[sort](result);
 
   const jobs = await result;
 
