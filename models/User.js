@@ -7,38 +7,37 @@ const userSchema = new mongoose.Schema(
   {
     name: {
       type: String,
-      required: [true, 'Please provide name.'],
+      required: [true, 'Please provide a name.'],
       trim: true,
-      minlength: 3,
-      maxlength: 20,
+      minlength: [3, 'Name must be at least 3 characters long.'],
+      maxlength: [20, 'Name cannot exceed 20 characters.'],
     },
     lastName: {
       type: String,
       trim: true,
-      maxlength: 20,
-      default: 'lastName',
+      maxlength: [20, 'Last name cannot exceed 20 characters.'],
+      default: '',
     },
     email: {
       type: String,
-      required: [true, 'Please provide email.'],
+      required: [true, 'Please provide an email.'],
       unique: true,
       lowercase: true,
-      validate: [validator.isEmail, 'Please provide a valid email.'],
-    },
-    photo: {
-      type: String,
-      default: 'default.jpg',
+      validate: {
+        validator: validator.isEmail,
+        message: 'Please provide a valid email.',
+      },
     },
     location: {
       type: String,
       trim: true,
-      maxlength: 20,
-      default: 'my city',
+      maxlength: [30, 'Location cannot exceed 30 characters.'],
+      default: '',
     },
     password: {
       type: String,
-      required: [true, 'Please provide password.'],
-      minlength: 6,
+      required: [true, 'Please provide a password.'],
+      minlength: [6, 'Password must be at least 6 characters long.'],
       select: false,
     },
     passwordConfirm: {
@@ -48,7 +47,7 @@ const userSchema = new mongoose.Schema(
         validator: function (el) {
           return el === this.password;
         },
-        message: 'Passwords are not the same!',
+        message: 'Passwords do not match.',
       },
     },
     passwordChangedAt: {
@@ -64,20 +63,31 @@ const userSchema = new mongoose.Schema(
 );
 
 userSchema.pre('save', async function (next) {
-  if (this.isModified('password')) {
-    const salt = await bcrypt.genSalt(12);
-    this.password = await bcrypt.hash(this.password, salt);
-    this.passwordChangedAt = Date.now() - 1000;
-    this.passwordConfirm = undefined;
+  if (!this.isModified('password')) {
+    return next();
   }
+
+  const salt = await bcrypt.genSalt(12);
+  const hashedPassword = await bcrypt.hash(this.password, salt);
+
+  this.password = hashedPassword;
+  this.passwordChangedAt = Date.now() - 1000;
+  this.passwordConfirm = undefined;
 
   next();
 });
 
 userSchema.methods.createJWT = function () {
-  return jwt.sign({ userId: this._id }, process.env.JWT_SECRET, {
-    expiresIn: process.env.JWT_EXPIRES_IN,
-  });
+  const { JWT_SECRET, JWT_EXPIRES_IN } = process.env;
+
+  try {
+    const token = jwt.sign({ userId: this._id }, JWT_SECRET, {
+      expiresIn: JWT_EXPIRES_IN,
+    });
+    return token;
+  } catch (error) {
+    throw new Error('Failed to create JWT.');
+  }
 };
 
 userSchema.methods.comparePassword = async function (candidatePassword) {
