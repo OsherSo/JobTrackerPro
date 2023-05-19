@@ -1,14 +1,14 @@
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { Logo, FormRow, Alert } from "../components";
-import Wrapper from "../assets/wrappers/RegisterPage";
-import { useAppContext } from "../context/appContext";
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Logo, FormRow, Alert } from '../components';
+import Wrapper from '../assets/wrappers/RegisterPage';
+import { useAppContext } from '../context/appContext';
 
 const initialState = {
-  name: "",
-  email: "",
-  password: "",
-  passwordConfirm: "",
+  name: '',
+  email: '',
+  password: '',
+  passwordConfirm: '',
   isMember: true,
 };
 
@@ -38,14 +38,14 @@ const Register = () => {
     if (isMember) {
       setupUser({
         currentUser,
-        endPoint: "login",
-        alertText: "Login Successful! Redirecting...",
+        endPoint: 'login',
+        alertText: 'Login Successful! Redirecting...',
       });
     } else {
       setupUser({
         currentUser,
-        endPoint: "register",
-        alertText: "User Created! Redirecting...",
+        endPoint: 'register',
+        alertText: 'User Created! Redirecting...',
       });
     }
   };
@@ -53,7 +53,7 @@ const Register = () => {
   useEffect(() => {
     if (user) {
       setTimeout(() => {
-        navigate("/");
+        navigate('/');
       }, 2000);
     }
   }, [user, navigate]);
@@ -61,9 +61,9 @@ const Register = () => {
   return (
     <Wrapper className="full-page">
       <form className="form" onSubmit={onSubmit}>
-        <Logo />
+        {/* <Logo /> */}
 
-        <h3>{values.isMember ? "Login" : "Register"}</h3>
+        <h3>{values.isMember ? 'Login' : 'Register'}</h3>
 
         {showAlert && <Alert />}
 
@@ -104,10 +104,10 @@ const Register = () => {
         </button>
 
         <p>
-          {values.isMember ? "Not a member yet?" : "Already a member?"}
+          {values.isMember ? 'Not a member yet?' : 'Already a member?'}
 
           <button type="button" onClick={toggleMember} className="member-btn">
-            {values.isMember ? "Register" : "Login"}
+            {values.isMember ? 'Register' : 'Login'}
           </button>
         </p>
       </form>
