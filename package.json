@@ -4,11 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
-    "test-watch": "jest --watch",
-    "watch": "nodemon src/server.js",
-    "start": "node src/server.js",
-    "cluster": "pm2 start src/server.js -i max"
+    "build-client": "cd client && npm run build",
+    "server": "nodemon server --ignore client",
+    "client": "npm start --prefix client",
+    "start": "npm run server & npm run client"
   },
   "keywords": [],
   "author": "",

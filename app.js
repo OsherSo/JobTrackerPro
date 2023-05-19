@@ -1,4 +1,6 @@
 require('express-async-errors');
+
+const path = require('path');
 const morgan = require('morgan');
 const express = require('express');
 
@@ -15,14 +17,16 @@ if (process.env.NODE_ENV !== 'production') {
   app.use(morgan('dev'));
 }
 
-app.use(express.json());
+app.use(express.static(path.join(__dirname, 'client', 'build')));
 
-app.get('/', (req, res) => {
-  res.send('Welcome!');
-});
+app.use(express.json({ limit: '10kb' }));
 
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/jobs', authenticateUser, jobRouter);
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
+});
 
 app.use(notFound);
 app.use(errorHandler);
