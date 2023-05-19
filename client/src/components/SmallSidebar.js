@@ -1,8 +1,8 @@
-import Wrapper from "../assets/wrappers/SmallSidebar";
-import { FaTimes } from "react-icons/fa";
-import { useAppContext } from "../context/appContext";
-import Logo from "./Logo";
-import NavLinks from "./NavLinks";
+import Wrapper from '../assets/wrappers/SmallSidebar';
+import { FaTimes } from 'react-icons/fa';
+import { useAppContext } from '../context/appContext';
+import Logo from './Logo';
+import NavLinks from './NavLinks';
 
 const SmallSidebar = () => {
   const { showSidebar, toggleSidebar } = useAppContext();
@@ -11,7 +11,7 @@ const SmallSidebar = () => {
     <Wrapper>
       <div
         className={
-          showSidebar ? "sidebar-container show-sidebar" : "sidebar-container"
+          showSidebar ? 'sidebar-container show-sidebar' : 'sidebar-container'
         }
       >
         <div className="content">

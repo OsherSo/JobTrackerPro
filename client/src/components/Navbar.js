@@ -1,9 +1,9 @@
-import { useState } from "react";
-import { FaAlignLeft, FaUserCircle, FaCaretDown } from "react-icons/fa";
+import { useState } from 'react';
+import { FaAlignLeft, FaUserCircle, FaCaretDown } from 'react-icons/fa';
 
-import Logo from "./Logo";
-import Wrapper from "../assets/wrappers/Navbar";
-import { useAppContext } from "../context/appContext";
+import Logo from './Logo';
+import Wrapper from '../assets/wrappers/Navbar';
+import { useAppContext } from '../context/appContext';
 
 const Navbar = () => {
   const [showLogout, setShowLogout] = useState(false);
@@ -29,7 +29,7 @@ const Navbar = () => {
             {user?.name}
             <FaCaretDown />
           </button>
-          <div className={showLogout ? "dropdown show-dropdown" : "dropdown"}>
+          <div className={showLogout ? 'dropdown show-dropdown' : 'dropdown'}>
             <button type="button" className="dropdown-btn" onClick={logoutUser}>
               logout
             </button>

@@ -42,6 +42,8 @@ html {
   --red-dark: #842029;
   --green-light: #d1e7dd;
   --green-dark: #0f5132;
+  --yellow-dark: #f6be00;
+  --yellow-light: #f1eb9c;
 
   /* fonts  */
   --headingFont: 'Roboto Condensed', Sans-Serif;
@@ -202,6 +204,10 @@ ul {
 .alert-success {
   color: var(--green-dark);
   background: var(--green-light);
+}
+.alert-wait {
+  color: var(--yellow-dark);
+  background: var(--yellow-light);
 }
 /* form */
 
