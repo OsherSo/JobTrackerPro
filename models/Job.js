@@ -4,33 +4,41 @@ const jobSchema = new mongoose.Schema(
   {
     company: {
       type: String,
-      required: [true, 'Please provide company name'],
-      maxlength: 50,
+      required: [true, 'Please provide the company name.'],
+      maxlength: [50, 'Company name cannot exceed 50 characters.'],
     },
     position: {
       type: String,
-      required: [true, 'Please provide position'],
-      maxlength: 100,
+      required: [true, 'Please provide the position.'],
+      maxlength: [50, 'Position cannot exceed 50 characters.'],
     },
     status: {
       type: String,
-      enum: ['interview', 'declined', 'pending'],
+      enum: {
+        values: ['interview', 'declined', 'pending'],
+        message:
+          'Invalid status. Please choose either "interview", "declined", or "pending".',
+      },
       default: 'pending',
     },
     jobType: {
       type: String,
-      enum: ['full-time', 'part-time', 'remote', 'internship'],
+      enum: {
+        values: ['full-time', 'part-time', 'remote', 'internship'],
+        message:
+          'Invalid job type. Please choose either "full-time", "part-time", "remote", or "internship".',
+      },
       default: 'full-time',
     },
     jobLocation: {
       type: String,
-      default: 'my city',
-      required: true,
+      default: '',
+      required: [true, 'Please provide the job location.'],
     },
     createdBy: {
       type: mongoose.Schema.ObjectId,
       ref: 'User',
-      required: [true, 'Please provide user'],
+      required: [true, 'Please provide the user.'],
     },
   },
   { timestamps: true }
