@@ -4,6 +4,10 @@ const path = require('path');
 const morgan = require('morgan');
 const express = require('express');
 
+const helmet = require('helmet');
+const xss = require('xss-clean');
+const mongoSanitize = require('express-mongo-sanitize');
+
 const jobRouter = require('./routes/jobRoutes');
 const authRouter = require('./routes/authRoutes');
 
@@ -20,6 +24,10 @@ if (process.env.NODE_ENV !== 'production') {
 app.use(express.static(path.join(__dirname, 'client', 'build')));
 
 app.use(express.json({ limit: '10kb' }));
+
+app.use(helmet());
+app.use(xss());
+app.use(mongoSanitize());
 
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/jobs', authenticateUser, jobRouter);
