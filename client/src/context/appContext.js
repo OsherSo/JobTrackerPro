@@ -127,7 +127,8 @@ const AppProvider = ({ children }) => {
     });
   };
 
-  const logoutUser = () => {
+  const logoutUser = async () => {
+    await authFetch.get('/auth/logout');
     dispatch({ type: LOGOUT_USER });
   };
 
@@ -296,6 +297,7 @@ const AppProvider = ({ children }) => {
 
   useEffect(() => {
     getCurrentUser();
+    // eslint-disable-next-line
   }, []);
 
   return (
