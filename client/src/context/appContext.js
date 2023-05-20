@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useReducer, useContext } from 'react';
+import React, { useReducer, useContext, useEffect } from 'react';
 
 import reducer from './reducer';
 import {
@@ -29,9 +29,12 @@ import {
   SHOW_STATS_SUCCESS,
   CLEAR_FILTERS,
   CHANGE_PAGE,
+  GET_CURRENT_USER_BEGIN,
+  GET_CURRENT_USER_SUCCESS,
 } from './actions';
 
 const initialState = {
+  userLoading: true,
   isLoading: false,
   showAlert: false,
   alertText: '',
@@ -274,6 +277,26 @@ const AppProvider = ({ children }) => {
   const changePage = (page) => {
     dispatch({ type: CHANGE_PAGE, payload: { page } });
   };
+
+  const getCurrentUser = async () => {
+    dispatch({ type: GET_CURRENT_USER_BEGIN });
+    try {
+      const { data } = await authFetch('/auth/getCurrentUser');
+      const { user, location } = data;
+
+      dispatch({
+        type: GET_CURRENT_USER_SUCCESS,
+        payload: { user, location },
+      });
+    } catch (error) {
+      if (error.response.status === 401) return;
+      logoutUser();
+    }
+  };
+
+  useEffect(() => {
+    getCurrentUser();
+  }, []);
 
   return (
     <AppContext.Provider
