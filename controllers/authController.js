@@ -28,9 +28,16 @@ exports.login = async (req, res) => {
   if (!user || !(await user.comparePassword(password))) {
     throw new UnauthenticatedError('Invalid Credentials');
   }
-
   user.password = undefined;
+
   const token = user.createJWT();
+
+  const oneDay = 1000 * 60 * 60 * 24;
+  res.cookie('token', token, {
+    httpOnly: true,
+    expires: new Date(Date.now() + oneDay),
+    secure: process.env.NODE_ENV === 'production',
+  });
 
   res.status(StatusCodes.OK).json({
     user,
