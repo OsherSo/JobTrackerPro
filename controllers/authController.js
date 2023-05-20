@@ -59,3 +59,12 @@ exports.updateUser = async (req, res) => {
     location: user.location,
   });
 };
+
+exports.getCurrentUser = async (req, res) => {
+  const user = await User.findById(req.user.userId);
+
+  res.status(StatusCodes.OK).json({
+    user,
+    location: user.location,
+  });
+};

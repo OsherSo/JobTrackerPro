@@ -18,5 +18,8 @@ router.route('/login').post(apiLimiter, authController.login);
 
 // Private
 router.route('/updateUser').patch(authenticateUser, authController.updateUser);
+router
+  .route('/getCurrentUser')
+  .get(authenticateUser, authController.getCurrentUser);
 
 module.exports = router;
