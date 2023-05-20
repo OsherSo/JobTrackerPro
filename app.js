@@ -3,6 +3,7 @@ require('express-async-errors');
 const path = require('path');
 const morgan = require('morgan');
 const express = require('express');
+const cookieParser = require('cookie-parser');
 
 const helmet = require('helmet');
 const xss = require('xss-clean');
@@ -24,6 +25,8 @@ if (process.env.NODE_ENV !== 'production') {
 app.use(express.static(path.join(__dirname, 'client', 'build')));
 
 app.use(express.json({ limit: '10kb' }));
+
+app.use(cookieParser());
 
 app.use(helmet());
 app.use(xss());

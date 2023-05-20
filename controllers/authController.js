@@ -20,7 +20,6 @@ exports.register = async (req, res) => {
       email: user.email,
       location: user.location,
     },
-    token,
   });
 };
 
@@ -39,7 +38,6 @@ exports.login = async (req, res) => {
 
   res.status(StatusCodes.OK).json({
     user,
-    token,
     location: user.location,
   });
 };
@@ -58,7 +56,6 @@ exports.updateUser = async (req, res) => {
 
   res.status(StatusCodes.OK).json({
     user,
-    token,
     location: user.location,
   });
 };
