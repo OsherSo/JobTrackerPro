@@ -1,6 +1,7 @@
 const { StatusCodes } = require('http-status-codes');
 
 const User = require('../models/User');
+const attachCookie = require('../utils/attachCookie');
 const { UnauthenticatedError } = require('../errors');
 
 exports.register = async (req, res) => {
@@ -9,6 +10,8 @@ exports.register = async (req, res) => {
   const user = await User.create({ name, email, password, passwordConfirm });
 
   const token = user.createJWT();
+
+  attachCookie({ res, token });
 
   res.status(StatusCodes.CREATED).json({
     user: {
@@ -32,12 +35,7 @@ exports.login = async (req, res) => {
 
   const token = user.createJWT();
 
-  const oneDay = 1000 * 60 * 60 * 24;
-  res.cookie('token', token, {
-    httpOnly: true,
-    expires: new Date(Date.now() + oneDay),
-    secure: process.env.NODE_ENV === 'production',
-  });
+  attachCookie({ res, token });
 
   res.status(StatusCodes.OK).json({
     user,
@@ -55,6 +53,8 @@ exports.updateUser = async (req, res) => {
   );
 
   const token = user.createJWT();
+
+  attachCookie({ res, token });
 
   res.status(StatusCodes.OK).json({
     user,
