@@ -14,7 +14,9 @@ const Profile = () => {
 
   const [password, setPassword] = useState(user?.password);
   const [newPassword, setNewPassword] = useState(user?.newPassword);
-  const [confirmPassword, setConfirmPassword] = useState(user?.confirmPassword);
+  const [newPasswordConfirm, setNewPasswordConfirm] = useState(
+    user?.newPasswordConfirm
+  );
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -80,11 +82,11 @@ const Profile = () => {
             handleChange={(e) => setNewPassword(e.target.value)}
           />
           <FormRow
-            labelText="confirm password"
+            labelText="new password confirm"
             type="password"
-            name="confirmPassword"
-            value={confirmPassword}
-            handleChange={(e) => setConfirmPassword(e.target.value)}
+            name="newPasswordConfirm"
+            value={newPasswordConfirm}
+            handleChange={(e) => setNewPasswordConfirm(e.target.value)}
           />
           <button className="btn btn-block" type="submit" disabled={isLoading}>
             {isLoading ? 'Please Wait...' : 'save changes'}

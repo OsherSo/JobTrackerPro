@@ -76,3 +76,25 @@ exports.logout = async (req, res) => {
   });
   res.status(StatusCodes.OK).json({ msg: 'user logged out!' });
 };
+
+exports.changePassword = async (req, res) => {
+  const { password, newPassword, newPasswordConfirm } = req.body;
+  const user = await User.findById(req.user.userId).select('+password');
+
+  if (!(await user.comparePassword(password))) {
+    throw new UnauthenticatedError('Invalid Credentials');
+  }
+
+  user.password = newPassword;
+  user.passwordConfirm = newPasswordConfirm;
+  await user.save();
+
+  const token = user.createJWT();
+
+  attachCookie({ res, token });
+
+  res.status(StatusCodes.OK).json({
+    user,
+    location: user.location,
+  });
+};
