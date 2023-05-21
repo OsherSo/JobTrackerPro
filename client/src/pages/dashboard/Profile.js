@@ -1,7 +1,7 @@
-import { useState } from "react";
-import { FormRow, Alert } from "../../components";
-import { useAppContext } from "../../context/appContext";
-import Wrapper from "../../assets/wrappers/DashboardFormPage";
+import { useState } from 'react';
+import { FormRow, Alert } from '../../components';
+import { useAppContext } from '../../context/appContext';
+import Wrapper from '../../assets/wrappers/DashboardFormPage';
 
 const Profile = () => {
   const { user, showAlert, displayAlert, updateUser, isLoading } =
@@ -11,6 +11,10 @@ const Profile = () => {
   const [email, setEmail] = useState(user?.email);
   const [lastName, setLastName] = useState(user?.lastName);
   const [location, setLocation] = useState(user?.location);
+
+  const [password, setPassword] = useState(user?.password);
+  const [newPassword, setNewPassword] = useState(user?.newPassword);
+  const [confirmPassword, setConfirmPassword] = useState(user?.confirmPassword);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -53,7 +57,37 @@ const Profile = () => {
             handleChange={(e) => setLocation(e.target.value)}
           />
           <button className="btn btn-block" type="submit" disabled={isLoading}>
-            {isLoading ? "Please Wait..." : "save changes"}
+            {isLoading ? 'Please Wait...' : 'save changes'}
+          </button>
+        </div>
+      </form>
+      <form className="form" onSubmit={handleSubmit}>
+        <h3>Change Password</h3>
+        {showAlert && <Alert />}
+        <div className="form-center">
+          <FormRow
+            labelText="current password"
+            type="password"
+            name="password"
+            value={password}
+            handleChange={(e) => setPassword(e.target.value)}
+          />
+          <FormRow
+            labelText="new password"
+            type="password"
+            name="newPassword"
+            value={newPassword}
+            handleChange={(e) => setNewPassword(e.target.value)}
+          />
+          <FormRow
+            labelText="confirm password"
+            type="password"
+            name="confirmPassword"
+            value={confirmPassword}
+            handleChange={(e) => setConfirmPassword(e.target.value)}
+          />
+          <button className="btn btn-block" type="submit" disabled={isLoading}>
+            {isLoading ? 'Please Wait...' : 'save changes'}
           </button>
         </div>
       </form>
