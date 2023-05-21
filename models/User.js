@@ -53,6 +53,18 @@ const userSchema = new mongoose.Schema(
     passwordChangedAt: {
       type: Date,
     },
+    verificationToken: {
+      type: String,
+      select: false,
+    },
+    isVerified: {
+      type: Boolean,
+      default: false,
+    },
+    verified: {
+      type: Date,
+      select: false,
+    },
     active: {
       type: Boolean,
       default: true,
