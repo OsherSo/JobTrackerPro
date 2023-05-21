@@ -34,6 +34,7 @@ import {
   CHANGE_USER_PASSWORD_BEGIN,
   CHANGE_USER_PASSWORD_SUCCESS,
   CHANGE_USER_PASSWORD_ERROR,
+  SET_SEARCH_STATUS,
 } from './actions';
 
 const initialState = {
@@ -240,6 +241,10 @@ const AppProvider = ({ children }) => {
     clearAlert();
   };
 
+  const setSearchStatus = (searchStatus) => {
+    dispatch({ type: SET_SEARCH_STATUS, payload: { searchStatus } });
+  };
+
   const setEditJob = (id) => {
     dispatch({ type: SET_EDIT_JOB, payload: { id } });
   };
@@ -346,6 +351,7 @@ const AppProvider = ({ children }) => {
         showStats,
         clearFilters,
         changePage,
+        setSearchStatus,
       }}
     >
       {children}

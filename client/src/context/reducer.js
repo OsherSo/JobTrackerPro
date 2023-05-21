@@ -30,6 +30,7 @@ import {
   CHANGE_USER_PASSWORD_BEGIN,
   CHANGE_USER_PASSWORD_SUCCESS,
   CHANGE_USER_PASSWORD_ERROR,
+  SET_SEARCH_STATUS,
 } from './actions';
 
 import { initialState } from './appContext';
@@ -205,6 +206,12 @@ const reducer = (state, action) => {
         jobs: action.payload.jobs,
         totalJobs: action.payload.totalJobs,
         numOfPages: action.payload.numOfPages,
+      };
+    },
+    [SET_SEARCH_STATUS]: (state, action) => {
+      return {
+        ...state,
+        searchStatus: action.payload.searchStatus,
       };
     },
     [SET_EDIT_JOB]: (state, action) => {
