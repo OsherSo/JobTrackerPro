@@ -2,7 +2,7 @@ const { StatusCodes } = require('http-status-codes');
 
 const User = require('../models/User');
 const attachCookie = require('../utils/attachCookie');
-const { UnauthenticatedError } = require('../errors');
+const { UnauthenticatedError, BadRequestError } = require('../errors');
 
 exports.register = async (req, res) => {
   const { name, email, password, passwordConfirm } = req.body;
@@ -82,7 +82,7 @@ exports.changePassword = async (req, res) => {
   const user = await User.findById(req.user.userId).select('+password');
 
   if (!(await user.comparePassword(password))) {
-    throw new UnauthenticatedError('Invalid Credentials');
+    throw new BadRequestError('Password is incorrect');
   }
 
   user.password = newPassword;

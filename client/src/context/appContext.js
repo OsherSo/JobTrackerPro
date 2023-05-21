@@ -31,6 +31,9 @@ import {
   CHANGE_PAGE,
   GET_CURRENT_USER_BEGIN,
   GET_CURRENT_USER_SUCCESS,
+  CHANGE_USER_PASSWORD_BEGIN,
+  CHANGE_USER_PASSWORD_SUCCESS,
+  CHANGE_USER_PASSWORD_ERROR,
 } from './actions';
 
 const initialState = {
@@ -145,6 +148,29 @@ const AppProvider = ({ children }) => {
       if (error.response.status !== 401) {
         dispatch({
           type: UPDATE_USER_ERROR,
+          payload: { msg: error.response.data.msg },
+        });
+      }
+    }
+    clearAlert();
+  };
+
+  const changeUserPassword = async (currentUser) => {
+    dispatch({ type: CHANGE_USER_PASSWORD_BEGIN });
+    try {
+      const { data } = await authFetch.patch(
+        '/auth/changePassword',
+        currentUser
+      );
+      const { user, location } = data;
+      dispatch({
+        type: CHANGE_USER_PASSWORD_SUCCESS,
+        payload: { user, location },
+      });
+    } catch (error) {
+      if (error.response.status !== 401) {
+        dispatch({
+          type: CHANGE_USER_PASSWORD_ERROR,
           payload: { msg: error.response.data.msg },
         });
       }
@@ -309,6 +335,7 @@ const AppProvider = ({ children }) => {
         toggleSidebar,
         logoutUser,
         updateUser,
+        changeUserPassword,
         handleChange,
         clearValues,
         createJob,

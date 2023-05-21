@@ -15,10 +15,9 @@ const router = express.Router();
 // Public
 router.route('/register').post(apiLimiter, authController.register);
 router.route('/login').post(apiLimiter, authController.login);
+router.route('/logout').get(authController.logout);
 
 // Private
-router.route('/logout').get(authenticateUser, authController.logout);
-
 router
   .route('/changePassword')
   .patch(authenticateUser, authController.changePassword);

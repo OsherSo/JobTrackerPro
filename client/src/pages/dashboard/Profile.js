@@ -4,8 +4,14 @@ import { useAppContext } from '../../context/appContext';
 import Wrapper from '../../assets/wrappers/DashboardFormPage';
 
 const Profile = () => {
-  const { user, showAlert, displayAlert, updateUser, isLoading } =
-    useAppContext();
+  const {
+    user,
+    showAlert,
+    displayAlert,
+    updateUser,
+    isLoading,
+    changeUserPassword,
+  } = useAppContext();
 
   const [name, setName] = useState(user?.name);
   const [email, setEmail] = useState(user?.email);
@@ -27,9 +33,20 @@ const Profile = () => {
 
     updateUser({ name, email, lastName, location });
   };
+
+  const handlePasswordChange = (e) => {
+    e.preventDefault();
+    if (!password || !newPassword || !newPasswordConfirm) {
+      displayAlert();
+      return;
+    }
+
+    changeUserPassword({ password, newPassword, newPasswordConfirm });
+  };
+
   return (
     <Wrapper>
-      <form className="form" onSubmit={handleSubmit}>
+      <form className="form">
         <h3>profile</h3>
         {showAlert && <Alert />}
         <div className="form-center">
@@ -58,14 +75,19 @@ const Profile = () => {
             value={location}
             handleChange={(e) => setLocation(e.target.value)}
           />
-          <button className="btn btn-block" type="submit" disabled={isLoading}>
+          <button
+            className="btn btn-block"
+            type="submit"
+            disabled={isLoading}
+            onClick={handleSubmit}
+          >
             {isLoading ? 'Please Wait...' : 'save changes'}
           </button>
         </div>
       </form>
-      <form className="form" onSubmit={handleSubmit}>
+
+      <form className="form">
         <h3>Change Password</h3>
-        {showAlert && <Alert />}
         <div className="form-center">
           <FormRow
             labelText="current password"
@@ -88,7 +110,12 @@ const Profile = () => {
             value={newPasswordConfirm}
             handleChange={(e) => setNewPasswordConfirm(e.target.value)}
           />
-          <button className="btn btn-block" type="submit" disabled={isLoading}>
+          <button
+            className="btn btn-block"
+            type="submit"
+            disabled={isLoading}
+            onClick={handlePasswordChange}
+          >
             {isLoading ? 'Please Wait...' : 'save changes'}
           </button>
         </div>
