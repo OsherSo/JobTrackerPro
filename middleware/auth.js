@@ -11,10 +11,17 @@ const auth = async (req, res, next) => {
   }
 
   const payload = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
+
   const user = await User.findById(payload.userId);
   if (!user) {
     throw new UnauthenticatedError('Authentication Invalid');
   }
+  if (user.changedPasswordAfter(payload.iat)) {
+    throw new UnauthenticatedError(
+      'User recently changed password! Please log in again.'
+    );
+  }
+
   req.user = { userId: payload.userId };
 
   next();
