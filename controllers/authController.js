@@ -44,6 +44,7 @@ exports.login = async (req, res) => {
 
 exports.updateUser = async (req, res) => {
   const { email, name, lastName, location } = req.body;
+
   const user = await User.findByIdAndUpdate(
     req.user.userId,
     { email, name, lastName, location },
@@ -74,6 +75,7 @@ exports.logout = async (req, res) => {
     httpOnly: true,
     expires: new Date(Date.now() + 1000),
   });
+
   res.status(StatusCodes.OK).json({ msg: 'user logged out!' });
 };
 

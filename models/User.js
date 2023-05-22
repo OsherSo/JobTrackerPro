@@ -10,12 +10,12 @@ const userSchema = new mongoose.Schema(
       required: [true, 'Please provide a name.'],
       trim: true,
       minlength: [3, 'Name must be at least 3 characters long.'],
-      maxlength: [20, 'Name cannot exceed 20 characters.'],
+      maxlength: [25, 'Name cannot exceed 25 characters.'],
     },
     lastName: {
       type: String,
       trim: true,
-      maxlength: [20, 'Last name cannot exceed 20 characters.'],
+      maxlength: [25, 'Last name cannot exceed 25 characters.'],
       default: '',
     },
     email: {
@@ -52,18 +52,6 @@ const userSchema = new mongoose.Schema(
     },
     passwordChangedAt: {
       type: Date,
-    },
-    verificationToken: {
-      type: String,
-      select: false,
-    },
-    isVerified: {
-      type: Boolean,
-      default: false,
-    },
-    verified: {
-      type: Date,
-      select: false,
     },
     active: {
       type: Boolean,
