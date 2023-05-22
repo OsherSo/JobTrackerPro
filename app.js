@@ -1,5 +1,6 @@
 require('express-async-errors');
 
+const cors = require('cors');
 const path = require('path');
 const morgan = require('morgan');
 const express = require('express');
@@ -17,6 +18,8 @@ const authenticateUser = require('./middleware/auth');
 const errorHandler = require('./middleware/errorHandler');
 
 const app = express();
+
+app.use(cors());
 
 if (process.env.NODE_ENV !== 'production') {
   app.use(morgan('dev'));

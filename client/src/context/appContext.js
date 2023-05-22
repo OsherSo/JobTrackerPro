@@ -255,16 +255,14 @@ const AppProvider = ({ children }) => {
     }
     dispatch({ type: GET_LOCATION_PREDICTIONS_BEGIN });
     try {
-      const { data } = await authFetch.get(
+      const { data } = await authFetch(
         `/jobs/locationPredictions/${jobLocation}`
       );
       dispatch({
         type: GET_LOCATION_PREDICTIONS_SUCCESS,
         payload: { locationPredictions: data.predictions },
       });
-    } catch (error) {
-      // logoutUser();
-    }
+    } catch (error) {}
     clearAlert();
   };
 
