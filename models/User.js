@@ -77,6 +77,23 @@ userSchema.pre('save', async function (next) {
   next();
 });
 
+userSchema.pre(/^find/, function (next) {
+  this.find({ active: true });
+  next();
+});
+
+userSchema.methods.changedPasswordAfter = function (JWTTimestamp) {
+  if (this.passwordChangedAt) {
+    const passwordChangedAtTimestamp = parseInt(
+      this.passwordChangedAt.getTime() / 1000,
+      10
+    );
+    return JWTTimestamp < passwordChangedAtTimestamp;
+  }
+
+  return false;
+};
+
 userSchema.methods.createJWT = function () {
   const { JWT_SECRET, JWT_EXPIRES_IN } = process.env;
 
