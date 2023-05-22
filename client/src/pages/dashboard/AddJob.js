@@ -1,6 +1,8 @@
-import { useAppContext } from "../../context/appContext";
-import Wrapper from "../../assets/wrappers/DashboardFormPage";
-import { FormRow, FormRowSelect, Alert } from "../../components";
+import { useEffect } from 'react';
+
+import { useAppContext } from '../../context/appContext';
+import Wrapper from '../../assets/wrappers/DashboardFormPage';
+import { FormRow, FormRowSelect, Alert } from '../../components';
 
 const AddJob = () => {
   const {
@@ -19,7 +21,13 @@ const AddJob = () => {
     clearValues,
     createJob,
     editJob,
+    getLocationPrediction,
   } = useAppContext();
+
+  useEffect(() => {
+    getLocationPrediction();
+    // eslint-disable-next-line
+  }, [jobLocation]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -43,7 +51,7 @@ const AddJob = () => {
   return (
     <Wrapper>
       <form className="form">
-        <h3>{isEditing ? "edit job" : "add job"} </h3>
+        <h3>{isEditing ? 'edit job' : 'add job'} </h3>
         {showAlert && <Alert />}
 
         <div className="form-center">

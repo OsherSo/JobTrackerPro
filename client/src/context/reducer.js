@@ -31,6 +31,8 @@ import {
   CHANGE_USER_PASSWORD_SUCCESS,
   CHANGE_USER_PASSWORD_ERROR,
   SET_SEARCH_STATUS,
+  GET_LOCATION_PREDICTIONS_BEGIN,
+  GET_LOCATION_PREDICTIONS_SUCCESS,
 } from './actions';
 
 import { initialState } from './appContext';
@@ -206,6 +208,19 @@ const reducer = (state, action) => {
         jobs: action.payload.jobs,
         totalJobs: action.payload.totalJobs,
         numOfPages: action.payload.numOfPages,
+      };
+    },
+    [GET_LOCATION_PREDICTIONS_BEGIN]: (state, action) => {
+      return {
+        ...state,
+        isLoading: true,
+      };
+    },
+    [GET_LOCATION_PREDICTIONS_SUCCESS]: (state, action) => {
+      return {
+        ...state,
+        isLoading: false,
+        locationPredictions: action.payload.locationPredictions,
       };
     },
     [SET_SEARCH_STATUS]: (state, action) => {

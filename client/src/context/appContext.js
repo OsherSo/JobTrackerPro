@@ -35,6 +35,8 @@ import {
   CHANGE_USER_PASSWORD_SUCCESS,
   CHANGE_USER_PASSWORD_ERROR,
   SET_SEARCH_STATUS,
+  GET_LOCATION_PREDICTIONS_BEGIN,
+  GET_LOCATION_PREDICTIONS_SUCCESS,
 } from './actions';
 
 const initialState = {
@@ -66,6 +68,7 @@ const initialState = {
   searchType: 'all',
   sort: 'latest',
   sortOptions: ['latest', 'oldest', 'a-z', 'z-a'],
+  locationPredictions: [],
 };
 
 const AppContext = React.createContext();
@@ -241,6 +244,25 @@ const AppProvider = ({ children }) => {
     clearAlert();
   };
 
+  const getLocationPrediction = async () => {
+    const { jobLocation } = state;
+    if (jobLocation.length < 3) return;
+    dispatch({ type: GET_LOCATION_PREDICTIONS_BEGIN });
+    try {
+      const { data } = await authFetch.get(
+        `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${jobLocation}&radius=50000&key=AIzaSyBcHD_-amOFlMXBh2UAKURwVzR24Z3U_fg`
+      );
+      console.log(data);
+      dispatch({
+        type: GET_LOCATION_PREDICTIONS_SUCCESS,
+        payload: { locationPredictions: data.predictions },
+      });
+    } catch (error) {
+      // logoutUser();
+    }
+    clearAlert();
+  };
+
   const setSearchStatus = (searchStatus) => {
     dispatch({ type: SET_SEARCH_STATUS, payload: { searchStatus } });
   };
@@ -352,6 +374,7 @@ const AppProvider = ({ children }) => {
         clearFilters,
         changePage,
         setSearchStatus,
+        getLocationPrediction,
       }}
     >
       {children}
