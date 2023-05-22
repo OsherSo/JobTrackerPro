@@ -49,7 +49,10 @@ const AddJob = () => {
 
   const handleJobInput = (e) => {
     handleChange({ name: e.target.name, value: e.target.value });
-    setPredictionSelected(false);
+
+    if (e.target.name === 'jobLocation') {
+      setPredictionSelected(false);
+    }
   };
 
   const handlePredictionSelection = (prediction) => {
