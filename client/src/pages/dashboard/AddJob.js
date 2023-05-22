@@ -25,7 +25,7 @@ const AddJob = () => {
     locationPredictions,
   } = useAppContext();
 
-  const [predictionSelected, setPredictionSelected] = useState(false);
+  const [predictionSelected, setPredictionSelected] = useState(true);
 
   useEffect(() => {
     getLocationPrediction();
