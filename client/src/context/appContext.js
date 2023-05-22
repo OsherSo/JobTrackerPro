@@ -246,13 +246,18 @@ const AppProvider = ({ children }) => {
 
   const getLocationPrediction = async () => {
     const { jobLocation } = state;
-    if (jobLocation.length < 3) return;
+    if (jobLocation.length < 3) {
+      dispatch({
+        type: GET_LOCATION_PREDICTIONS_SUCCESS,
+        payload: { locationPredictions: [] },
+      });
+      return;
+    }
     dispatch({ type: GET_LOCATION_PREDICTIONS_BEGIN });
     try {
       const { data } = await authFetch.get(
-        `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${jobLocation}&radius=50000&key=AIzaSyBcHD_-amOFlMXBh2UAKURwVzR24Z3U_fg`
+        `/jobs/locationPredictions/${jobLocation}`
       );
-      console.log(data);
       dispatch({
         type: GET_LOCATION_PREDICTIONS_SUCCESS,
         payload: { locationPredictions: data.predictions },

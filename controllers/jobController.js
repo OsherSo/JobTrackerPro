@@ -130,7 +130,7 @@ exports.showStats = async (req, res) => {
 };
 
 exports.getLocationPredictions = async (req, res) => {
-  const { jobLocation } = req.body;
+  const { jobLocation } = req.params;
   const url = `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${jobLocation}&key=${process.env.GOOGLE_API_KEY}`;
   const response = await fetch(url);
   const data = await response.json();

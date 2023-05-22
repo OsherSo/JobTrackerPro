@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import { useAppContext } from '../../context/appContext';
 import Wrapper from '../../assets/wrappers/DashboardFormPage';
@@ -22,7 +22,10 @@ const AddJob = () => {
     createJob,
     editJob,
     getLocationPrediction,
+    locationPredictions,
   } = useAppContext();
+
+  const [predictionSelected, setPredictionSelected] = useState(false);
 
   useEffect(() => {
     getLocationPrediction();
@@ -46,6 +49,28 @@ const AddJob = () => {
 
   const handleJobInput = (e) => {
     handleChange({ name: e.target.name, value: e.target.value });
+    setPredictionSelected(false);
+  };
+
+  const handlePredictionSelection = (prediction) => {
+    handleChange({ name: 'jobLocation', value: prediction });
+    setPredictionSelected(true);
+  };
+
+  const renderLocationPredictions = () => {
+    if (locationPredictions.length === 0 || predictionSelected) {
+      return null;
+    }
+
+    return (
+      <ul className="location-predictions">
+        {locationPredictions.map((prediction, index) => (
+          <li key={index} onClick={() => handlePredictionSelection(prediction)}>
+            {prediction}
+          </li>
+        ))}
+      </ul>
+    );
   };
 
   return (
@@ -74,6 +99,7 @@ const AddJob = () => {
             value={jobLocation}
             handleChange={handleJobInput}
           />
+          {renderLocationPredictions()}
           <FormRowSelect
             name="status"
             value={status}

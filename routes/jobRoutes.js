@@ -5,8 +5,13 @@ const jobController = require('../controllers/jobController');
 const router = express.Router();
 
 router.route('/').get(jobController.getAllJobs).post(jobController.createJob);
-router.route('/locationPredictions').get(jobController.getLocationPredictions);
+
+router
+  .route('/locationPredictions/:jobLocation')
+  .get(jobController.getLocationPredictions);
+
 router.route('/stats').get(jobController.showStats);
+
 router
   .route('/:id')
   .patch(jobController.updateJob)
