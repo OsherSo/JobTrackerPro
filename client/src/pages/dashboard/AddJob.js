@@ -1,5 +1,3 @@
-import { useEffect, useState } from 'react';
-
 import { useAppContext } from '../../context/appContext';
 import Wrapper from '../../assets/wrappers/DashboardFormPage';
 import { FormRow, FormRowSelect, Alert } from '../../components';
@@ -21,16 +19,7 @@ const AddJob = () => {
     clearValues,
     createJob,
     editJob,
-    getLocationPrediction,
-    locationPredictions,
   } = useAppContext();
-
-  const [predictionSelected, setPredictionSelected] = useState(true);
-
-  useEffect(() => {
-    getLocationPrediction();
-    // eslint-disable-next-line
-  }, [jobLocation]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -49,31 +38,6 @@ const AddJob = () => {
 
   const handleJobInput = (e) => {
     handleChange({ name: e.target.name, value: e.target.value });
-
-    if (e.target.name === 'jobLocation') {
-      setPredictionSelected(false);
-    }
-  };
-
-  const handlePredictionSelection = (prediction) => {
-    handleChange({ name: 'jobLocation', value: prediction });
-    setPredictionSelected(true);
-  };
-
-  const renderLocationPredictions = () => {
-    if (locationPredictions.length === 0 || predictionSelected) {
-      return null;
-    }
-
-    return (
-      <ul className="location-predictions">
-        {locationPredictions.map((prediction, index) => (
-          <li key={index} onClick={() => handlePredictionSelection(prediction)}>
-            {prediction}
-          </li>
-        ))}
-      </ul>
-    );
   };
 
   return (
@@ -102,7 +66,6 @@ const AddJob = () => {
             value={jobLocation}
             handleChange={handleJobInput}
           />
-          {renderLocationPredictions()}
           <FormRowSelect
             name="status"
             value={status}

@@ -35,8 +35,6 @@ import {
   CHANGE_USER_PASSWORD_SUCCESS,
   CHANGE_USER_PASSWORD_ERROR,
   SET_SEARCH_STATUS,
-  GET_LOCATION_PREDICTIONS_BEGIN,
-  GET_LOCATION_PREDICTIONS_SUCCESS,
 } from './actions';
 
 const initialState = {
@@ -68,7 +66,6 @@ const initialState = {
   searchType: 'all',
   sort: 'latest',
   sortOptions: ['latest', 'oldest', 'a-z', 'z-a'],
-  locationPredictions: [],
 };
 
 const AppContext = React.createContext();
@@ -244,28 +241,6 @@ const AppProvider = ({ children }) => {
     clearAlert();
   };
 
-  const getLocationPrediction = async () => {
-    const { jobLocation } = state;
-    if (jobLocation.length < 3) {
-      dispatch({
-        type: GET_LOCATION_PREDICTIONS_SUCCESS,
-        payload: { locationPredictions: [] },
-      });
-      return;
-    }
-    dispatch({ type: GET_LOCATION_PREDICTIONS_BEGIN });
-    try {
-      const { data } = await authFetch(
-        `/jobs/locationPredictions/${jobLocation}`
-      );
-      dispatch({
-        type: GET_LOCATION_PREDICTIONS_SUCCESS,
-        payload: { locationPredictions: data.predictions },
-      });
-    } catch (error) {}
-    clearAlert();
-  };
-
   const setSearchStatus = (searchStatus) => {
     dispatch({ type: SET_SEARCH_STATUS, payload: { searchStatus } });
   };
@@ -377,7 +352,6 @@ const AppProvider = ({ children }) => {
         clearFilters,
         changePage,
         setSearchStatus,
-        getLocationPrediction,
       }}
     >
       {children}

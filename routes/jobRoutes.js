@@ -6,10 +6,6 @@ const router = express.Router();
 
 router.route('/').get(jobController.getAllJobs).post(jobController.createJob);
 
-router
-  .route('/locationPredictions/:jobLocation')
-  .get(jobController.getLocationPredictions);
-
 router.route('/stats').get(jobController.showStats);
 
 router
