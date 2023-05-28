@@ -11,6 +11,7 @@ const xss = require('xss-clean');
 const mongoSanitize = require('express-mongo-sanitize');
 
 const jobRouter = require('./routes/jobRoutes');
+const taskRouter = require('./routes/taskRoutes');
 const authRouter = require('./routes/authRoutes');
 
 const notFound = require('./middleware/notFound');
@@ -37,6 +38,7 @@ app.use(mongoSanitize());
 
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/jobs', authenticateUser, jobRouter);
+app.use('/api/v1/tasks', authenticateUser, taskRouter);
 
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
